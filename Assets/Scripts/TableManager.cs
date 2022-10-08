@@ -6,9 +6,17 @@ using UnityEngine;
 public class TableManager : MonoBehaviour
 {
     public static TableManager reference;
-    public EditModal editModal;
+
     [SerializeField] Transform entryContainer;
     [SerializeField] StudentCardHandler entryCardPrefab;
+
+
+    [Space(20)]
+    [Header("Screens")]
+    public EditModal editModal;
+    [SerializeField] GameObject failedExercise;
+
+    [SerializeField] GameObject succesfulExercise;
 
     public static Database database;
 
@@ -69,6 +77,26 @@ public class TableManager : MonoBehaviour
 
     }//Closes DeactivateCards method
 
+    public void Check()
+    {
+        if (VerifyAssignment())
+        {
+            if (succesfulExercise) succesfulExercise.SetActive(true);
+        }
+        else if (failedExercise) failedExercise.SetActive(true);
+
+    }//Closes Check method
+
+
+    public bool VerifyAssignment()
+    {
+        foreach (var student in database.students)
+        {
+            if (student.approved && student.score < 3f ||
+            !student.approved && student.score >= 3f) return false;
+        }
+        return true;
+    }//Closes VerifyAssinment method
 
 
 }//Closes TableManager class
