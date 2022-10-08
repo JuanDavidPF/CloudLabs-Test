@@ -1,6 +1,5 @@
 ﻿{
-	"description": "Database generated using https://json-generator.com/",
-	"Database": [
+	"students": [
 		{
 			"_id": "63411f67b9cb5c2b777e0f39",
 			"age": 13,
