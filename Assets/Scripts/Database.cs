@@ -6,5 +6,5 @@ using System;
 [Serializable]
 public class Database
 {
-    public Student[] students;
+    public List<Student> students;
 }//Closes Datamase method

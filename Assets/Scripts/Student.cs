@@ -12,5 +12,6 @@ public class Student
     public string lastname;
     public string email;
     public float score;
+    public bool approved;
 
 }//closes Database class

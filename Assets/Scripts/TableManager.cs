@@ -5,23 +5,70 @@ using UnityEngine;
 
 public class TableManager : MonoBehaviour
 {
-
+    public static TableManager reference;
+    public EditModal editModal;
     [SerializeField] Transform entryContainer;
-    [SerializeField] Transform entryCard;
+    [SerializeField] StudentCardHandler entryCardPrefab;
 
-    [SerializeField] Database database;
+    public static Database database;
 
+    private List<StudentCardHandler> cards = new List<StudentCardHandler>();
 
     private void Awake()
     {
-        string filePath = Path.Combine(Application.streamingAssetsPath + "/students.json");
-        if (File.Exists(filePath))
-        {
-            string dataAsJson = File.ReadAllText(filePath);
+        reference = this;
+        database = new Database();
+        LoadCards();
+    }//Closes Awake method
 
-            JsonUtility.FromJsonOverwrite(dataAsJson, database);
+    public static void SaveJson()
+    {
+        string filePath = Path.Combine(Application.streamingAssetsPath + "/students.json");
+
+        if (!File.Exists(filePath)) return;
+        File.WriteAllText(filePath, JsonUtility.ToJson(database));
+
+    }//Closes SaveInJson method
+    public void LoadCards()
+    {
+        string filePath = Path.Combine(Application.streamingAssetsPath + "/students.json");
+        if (!entryContainer || !entryCardPrefab || !File.Exists(filePath)) return;
+
+        JsonUtility.FromJsonOverwrite(File.ReadAllText(filePath), database);
+
+        CreateCards();
+        DeactivateCards();
+
+        for (int i = 0; i < database.students.Count; i++)
+        {
+            StudentCardHandler card = cards[i];
+            Student student = database.students[i];
+            card.data = student;
+            card.gameObject.SetActive(true);
 
         }
 
-    }//Closes Awake method
+
+    }//Closes LoadCards method
+
+    private void DeactivateCards()
+    {
+        foreach (var card in cards) card.gameObject.SetActive(false);
+    }//Closes DeactivateCards method
+
+    private void CreateCards()
+    {
+        //This is for reusing cards instead of creating all cards every refresh
+        int cardsNeeded = Mathf.Max(0, database.students.Count - cards.Count);
+
+        for (int i = 0; i < cardsNeeded; i++)
+        {
+
+            cards.Add(Instantiate(entryCardPrefab, entryContainer));
+        }
+
+    }//Closes DeactivateCards method
+
+
+
 }//Closes TableManager class
