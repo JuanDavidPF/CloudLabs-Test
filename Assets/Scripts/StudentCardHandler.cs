@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class StudentCardHandler : MonoBehaviour
 {
-    [SerializeField] private EditModal modal;
+
     private Student m_data;
 
     public Student data

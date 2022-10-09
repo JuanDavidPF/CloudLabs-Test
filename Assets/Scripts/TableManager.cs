@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class TableManager : MonoBehaviour
 {
@@ -98,5 +99,10 @@ public class TableManager : MonoBehaviour
         return true;
     }//Closes VerifyAssinment method
 
+
+    public void GoToDragAndDrop()
+    {
+        SceneManager.LoadSceneAsync(1, LoadSceneMode.Single);
+    }
 
 }//Closes TableManager class
